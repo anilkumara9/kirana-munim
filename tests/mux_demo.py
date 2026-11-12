@@ -13,7 +13,7 @@ for i, c in enumerate(caps):
     f = f"{out}/cap/{i}.txt"; open(f, "w").write("\n".join(textwrap.wrap(c["text"], 21)))
     dt.append(f"drawtext=fontfile={FB}:textfile={f}:fontsize=68:line_spacing=16:fontcolor=0x0f1419:x=100:y=(h-text_h)/2:enable='between(t,{c['t']:.2f},{end:.2f})'")
 chain = ",".join(dt)
-vf = f"color=c=0xf7f9f9:s=1920x1080:r=25,drawtext=fontfile={FB}:text='KIRANA MUNIM':fontsize=34:fontcolor=0x0a7d5a:x=100:y=80,drawtext=fontfile={FR}:text='Generated voices only. Private review copy.':fontsize=28:fontcolor=0x536471:x=100:y=h-100,drawbox=x=0:y=0:w=2:h=1080:color=0xe1e8ed:t=fill[bg]"
+vf = f"color=c=0xf7f9f9:s=1920x1080:r=25,drawtext=fontfile={FB}:text='KIRANA MUNIM':fontsize=34:fontcolor=0x0a7d5a:x=100:y=80,drawtext=fontfile={FR}:text='Generated test voices. Real Gnani Prisma and Timbre calls.':fontsize=28:fontcolor=0x536471:x=100:y=h-100,drawbox=x=0:y=0:w=2:h=1080:color=0xe1e8ed:t=fill[bg]"
 fc = f"{vf};[bg]{chain}[bg2];[bg2][0:v]overlay=x=1180:y=0:shortest=1[o];[o]tpad=stop_mode=clone:stop_duration=4[v]"
 subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", out + "/phone.mp4", "-filter_complex", fc, "-map", "[v]", "-c:v", "libx264", "-crf", "17", "-pix_fmt", "yuv420p", out + "/video_only.mp4"], check=True)
 ins, fl, labs = [], [], []

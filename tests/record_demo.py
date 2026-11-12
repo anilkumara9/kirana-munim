@@ -50,6 +50,6 @@ with sync_playwright() as pw:
     b.cap("Typed test: no payment or credit stated. Flagged, Save blocked."); b.say("n10"); pg.screenshot(path=f"{out}/ambiguous.png"); b.sl(1.2)
     pg.fill("#tx", "रमेश ने 500 रुपये दिए"); pg.click("#tb"); b.sl(0.8); pg.fill("#ca", "500"); pg.click("#sv", force=True); b.sl(0.6)
     b.cap("Typed test: payment above the balance is refused."); b.say("n11"); pg.screenshot(path=f"{out}/overpay.png"); b.sl(1.5)
-    b.card("<h1>What is real</h1><p>Gnani Prisma and Timbre calls. Staged confirmation. Ledger in whole paise. Restart persistence. Name matching is a rule-based suggestion.</p><p>Not tested yet: real voices, noisy shops, physical microphones.</p><small>Prepared for Anil Kumara. Private review copy. Not submitted, not published.</small>", "n12", "Tested with generated voices only."); b.sl(3.0)
+    b.card("<h1>What is real</h1><p>Gnani Prisma and Timbre calls. Staged confirmation. Ledger in whole paise. Restart persistence. Name matching is a rule-based suggestion.</p><p>Not tested yet: real voices, noisy shops, physical microphones.</p><small>Generated test voices. Real Gnani calls.</small>", "n12", "Tested with generated voices only."); b.sl(3.0)
     b.cap(""); b.close(); srv.terminate()
 json.dump(EV, open(out + "/events.json", "w"), indent=1); json.dump(CAPS, open(out + "/caps.json", "w"), indent=1)
