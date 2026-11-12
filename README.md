@@ -6,26 +6,24 @@ The shopkeeper holds a button and says one entry in Hindi, Kannada or English, f
 
 ## Demo video
 
-[![Kirana Munim demo, 2 minutes](docs/demo-poster.png)](https://github.com/anilkumara9/kirana-munim/blob/main/docs/demo.mp4)
+[![Play the Kirana Munim demo, 2 minutes](docs/demo-poster.png)](https://anilkumara9.github.io/kirana-munim/)
 
-Click the image to play the video (about 2 minutes). It was recorded from the running app with real Gnani calls. The spoken inputs are generated test speech, the narrator is a separate generated voice, and the app's reply is a third voice. A headless browser with a fake microphone file was used, so physical microphone capture is not shown. Script: [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). One-page summary: [docs/one-page-pitch.pdf](docs/one-page-pitch.pdf).
+Click the image to play the video in the browser (about 2 minutes). The file is also in the repo: [docs/demo.mp4](docs/demo.mp4). It was recorded from the running app with real Gnani calls. The spoken inputs are generated test speech, the narrator is a separate generated voice, and the app's reply is a third voice. A headless browser with a fake microphone file was used, so physical microphone capture is not shown. Script: [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md). One-page summary: [docs/one-page-pitch.pdf](docs/one-page-pitch.pdf).
 
 ## System design
 
 ```mermaid
-flowchart LR
-    U([Shopkeeper]) -->|hold and speak| UI[Browser UI<br/>static/index.html]
-    UI -->|audio| SRV[Local server<br/>server.py]
-    SRV -->|WAV + language hint| STT[Gnani Prisma<br/>speech to text]
-    STT -->|transcript| SRV
-    SRV --> PARSE[Rule-based parser<br/>parser.py]
-    PARSE --> MATCH[Similar-name check<br/>names.py]
-    SRV -->|read-back text| TTS[Gnani Timbre<br/>text to speech]
-    TTS -->|reply audio| SRV
-    SRV -->|staged entry + candidates| UI
-    UI -->|confirm| SRV
-    SRV --> LEDGER[(Ledger file<br/>integer paise)]
-    GUARD[Usage guard<br/>outside the project] -.counts every call.- SRV
+flowchart TB
+    U([Shopkeeper]) -->|hold and speak| UI["Browser UI<br/>static/index.html"]
+    UI -->|audio| SRV["Local server<br/>server.py"]
+    SRV <-->|"speech to text"| STT["Gnani Prisma"]
+    SRV <-->|"text to speech"| TTS["Gnani Timbre"]
+    SRV --> PARSE["Rule-based parser<br/>parser.py"]
+    PARSE --> MATCH["Similar-name check<br/>names.py"]
+    SRV -->|"staged entry + candidates"| UI
+    UI -->|"confirm"| SRV
+    SRV --> LEDGER[("Ledger file<br/>integer paise")]
+    GUARD["Usage guard<br/>log outside the project"] -.->|"counts every call"| SRV
 ```
 
 Details, request sequence and safety rules: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
