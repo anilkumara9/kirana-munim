@@ -1,0 +1,199 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Kirana Munim - speak your udhaar ledger</title>
+<style>
+:root{--bg:#f5f5f7;--card:#fff;--ink:#1d1d1f;--mut:#6e6e73;--line:#e5e5ea;--acc:#0a7d5a;--acc2:#e6f4ee;--red:#d70015;--red2:#fff0f1;--sh:0 1px 2px rgba(0,0,0,.04),0 8px 30px rgba(0,0,0,.06)}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,"Noto Sans","Noto Sans Kannada","Noto Sans Devanagari",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+nav{position:sticky;top:0;z-index:5;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+nav div{max-width:1040px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:10px;font-weight:600}
+.mk{width:26px;height:26px;border-radius:8px;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:.9rem}
+nav small{margin-left:auto;color:var(--mut);font-weight:400}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px 56px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:start}
+h1{grid-column:1/-1;margin:0;font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+h1 span{color:var(--mut)}
+h1{text-wrap:balance}body{font-variant-numeric:tabular-nums}#mt{scroll-margin-top:64px}.cust{all:unset;display:flex;align-items:center;cursor:pointer;gap:12px;font-weight:600}.cust:focus-visible{outline:3px solid rgba(10,125,90,.4);outline-offset:2px;border-radius:8px}.stmt{list-style:none;margin:0;padding:0 0 4px 0}.stmt li{display:flex;justify-content:space-between;font-size:.88rem;color:var(--mut);padding:5px 0}.stmt b{color:var(--ink)}.copy{margin-top:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-weight:700;cursor:pointer}#cps{font-size:.85rem;color:var(--mut)}.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.opts .alt{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.col{display:grid;gap:24px}
+.card{background:var(--card);border-radius:24px;padding:28px;box-shadow:var(--sh)}
+h2{margin:0 0 14px;font-size:1.15rem;font-weight:650;letter-spacing:-.02em}
+.mic{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:36px 28px}
+#b{position:relative;overflow:hidden;width:168px;height:168px;border-radius:50%;border:0;background:linear-gradient(160deg,#12a273,#0a7d5a);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 30px rgba(10,125,90,.35);transition:transform .15s,box-shadow .15s;touch-action:none;-webkit-user-select:none;user-select:none}
+#b:active,#b.rec{transform:scale(.96)}
+#b canvas{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;pointer-events:none}#b svg,#b .bars{position:relative;z-index:1}#b svg{width:46px;height:46px}#b.gl{background:transparent}#b[aria-busy=true]{cursor:progress}#b .bars{display:none}
+#b.rec{background:linear-gradient(160deg,#ff453a,#d70015);box-shadow:0 0 0 10px var(--red2),0 10px 30px rgba(215,0,21,.35)}#b.gl.rec{background:transparent}
+#b.rec svg,#b[aria-busy=true] svg{display:none}#b.rec .bars{display:flex;gap:5px;align-items:center;height:44px}
+.bars i{width:6px;border-radius:3px;background:#1d1d1f;height:16px;animation:w .8s ease-in-out infinite}.bars i:nth-child(2){animation-delay:.12s}.bars i:nth-child(3){animation-delay:.24s}.bars i:nth-child(4){animation-delay:.36s}.bars i:nth-child(5){animation-delay:.48s}
+@keyframes w{50%{height:40px}}
+#bl{font-weight:600;font-size:1.05rem}
+.hint{color:var(--mut);font-size:.95rem;max-width:34ch}
+.lang{color:var(--mut);font-size:.82rem}
+#s{min-height:1.4em;color:var(--mut);font-size:.95rem}#s.err{color:var(--red)}
+audio{width:100%;max-width:340px;height:40px;border-radius:20px}
+.warn{background:var(--red2);color:var(--red);border-radius:14px;padding:12px 14px;margin-bottom:16px;font-size:.95rem;line-height:1.35}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row label{display:grid;gap:6px;font-size:.8rem;font-weight:500;color:var(--mut)}
+input,select{font:inherit;font-size:1rem;color:var(--ink);padding:13px 14px;border:1px solid var(--line);border-radius:14px;width:100%;background:#fbfbfd;appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,#86868b 50%),linear-gradient(135deg,#86868b 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+input.bad{border-color:var(--red)}
+:focus-visible{outline:3px solid rgba(10,125,90,.4);outline-offset:2px}
+.act{display:flex;gap:12px;margin-top:20px}.act button{flex:1;font:inherit;font-weight:600;padding:14px;border-radius:999px;border:0;cursor:pointer}
+#sv{background:var(--acc);color:#fff}#sv:disabled{background:#d2d2d7;color:#86868b;cursor:not-allowed}#ds{background:var(--bg);color:var(--ink)}
+.tot{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}.tot b{font-size:2.4rem;font-weight:700;letter-spacing:-.03em}.tot span{color:var(--mut);font-size:.9rem}
+table{width:100%;border-collapse:collapse;margin-top:8px}td{padding:14px 0;border-top:1px solid var(--line);vertical-align:middle}td:last-child{text-align:right;font-weight:650;font-variant-numeric:tabular-nums}
+td.ok{color:var(--acc)}.av{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc2);color:var(--acc);font-weight:650;margin-right:12px;vertical-align:middle}
+.empty{color:var(--mut);padding:8px 0}
+details{color:var(--mut);font-size:.92rem;padding:20px 28px}summary{cursor:pointer;font-weight:500}.dev{margin-top:14px;display:flex;gap:10px}.dev button{padding:0 20px;border-radius:14px;border:0;background:var(--bg);font:inherit;font-weight:600;cursor:pointer}
+footer{grid-column:1/-1;color:var(--mut);font-size:.85rem;text-align:center}
+[hidden]{display:none!important}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;padding:24px 16px 40px;gap:16px}.col{gap:16px}.card{padding:22px;border-radius:22px}nav div{padding:10px 16px}}
+@media(max-width:480px){.row{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* X-style restraint: white canvas, thin borders, no shadows, sharp type, pill actions */
+:root{--bg:#f7f9f9;--ink:#0f1419;--mut:#536471;--line:#eff3f4;--line2:#cfd9de}
+body{background:#fff;font-family:"Chirp","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans","Noto Sans Kannada","Noto Sans Devanagari",sans-serif;letter-spacing:0}
+nav{background:rgba(255,255,255,.85);border-bottom:1px solid var(--line)}
+nav div{max-width:990px;padding:0 16px;height:53px}nav div{font-weight:800;font-size:1.2rem}.mk{border-radius:50%;width:30px;height:30px}
+nav small{font-weight:500;font-size:.9rem}
+.wrap{max-width:990px;padding:0 16px 40px;gap:0 28px;grid-template-columns:minmax(0,600px) minmax(0,340px);grid-template-areas:"h c2" "c1 c2" "f c2";align-items:start}
+h1{grid-area:h;font-size:1.25rem;font-weight:800;letter-spacing:-.01em;line-height:1.3;padding:14px 16px;border:1px solid var(--line);border-bottom:0;margin:0}
+h1 br{display:none}h1 span{margin-left:.3em;font-weight:500}
+.wrap>.col:nth-of-type(1){grid-area:c1;gap:0;border:1px solid var(--line);border-top:1px solid var(--line)}
+.wrap>.col:nth-of-type(2){grid-area:c2;gap:16px;padding-top:12px;position:sticky;top:53px}
+footer{grid-area:f;text-align:left;padding:16px;border:1px solid var(--line);border-top:0;font-size:.8rem}
+.wrap>.col:nth-of-type(1) .card{background:transparent;border-radius:0;box-shadow:none;border-bottom:1px solid var(--line);padding:28px 20px}
+.wrap>.col:nth-of-type(1) .card:last-child{border-bottom:0}
+.wrap>.col:nth-of-type(2) .card{background:var(--bg);border-radius:16px;box-shadow:none;padding:16px;border:1px solid var(--line)}
+h2{font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
+.mic{padding:32px 20px}#b{box-shadow:none}.hint{max-width:none;font-size:.9rem}
+#b.gl{box-shadow:0 0 0 1px var(--line2)}#b.rec,#b.gl.rec{box-shadow:0 0 0 4px rgba(215,0,21,.18)}
+input,select{border:1px solid var(--line2);border-radius:6px;background:#fff;padding:12px}
+input:focus,select:focus{outline:2px solid #0a7d5a;outline-offset:-1px;border-color:#0a7d5a}
+.act button{border-radius:999px;padding:12px;font-weight:700}
+#sv{background:var(--ink);color:#fff}#sv:disabled{background:#8c959b;color:#fff;opacity:.5}
+#ds{background:#fff;border:1px solid var(--line2);color:var(--ink)}
+.warn{border-radius:8px;border:1px solid #f4c7cb}
+.tot b{font-size:2rem;font-weight:800}td{border-top:1px solid var(--line2)}.av{background:#e7e7e8;color:var(--ink)}td.ok{color:#0a7d5a}
+details.card{padding:16px}.dev button{background:var(--ink);color:#fff;border-radius:999px}
+audio{border-radius:999px}
+@media(max-width:860px){.wrap{display:block;padding:0}h1{border:0;border-bottom:1px solid var(--line);padding:12px 16px}.wrap>.col:nth-of-type(1){border:0}.wrap>.col:nth-of-type(2){position:static;padding:16px;gap:12px}footer{border:0;padding:16px}.wrap>.col:nth-of-type(1) .card{padding:24px 16px}}
+.note{background:#f0f9f5;border:1px solid #bfe3d3;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:.92rem;display:flex;gap:10px;flex-direction:column;align-items:flex-start}
+.note button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.impact{margin-top:16px;color:var(--mut);font-size:.92rem}.impact b{color:var(--ink)}.impact.bad{color:var(--red)}
+</style>
+<nav><div><span class=mk aria-hidden=true>₹</span>Kirana Munim<small>Voice ledger</small></div></nav>
+<div class=wrap>
+<h1>Speak. Review.<span>Keep track.</span></h1>
+<div class=col>
+<section class="card mic"><button id=b aria-label="Hold to speak"><canvas id=orb aria-hidden=true></canvas><svg viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden=true><rect x=9 y=2 width=6 height=12 rx=3 /><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span class=bars aria-hidden=true><i></i><i></i><i></i><i></i><i></i></span></button>
+<div id=bl>Hold to speak</div>
+<div class=hint>Try "Ramesh ko 200 rupaye udhaar" or "Ramesh ge 200 udri"</div>
+<div class=lang>Understands Hindi, Kannada and English</div>
+<div id=s role=status aria-live=polite></div>
+<audio id=a controls hidden aria-label="Spoken reply"></audio></section>
+<section class=card id=rv hidden aria-live=polite><h2>Check before saving</h2><div id=wn class=warn hidden></div><div id=mt class=note hidden></div>
+<div class=row><label>Customer<input id=cn autocomplete=off></label><label>Amount (rupees)<input id=ca inputmode=numeric autocomplete=off></label></div>
+<div class=row style="margin-top:14px"><label>Type<select id=ck><option value=credit>Credit (udhaar given)<option value=payment>Payment received<option value=sale>Sale</select></label></div>
+<div id=im class=impact aria-live=polite></div>
+<div class=act><button id=ds>Discard</button><button id=sv>Save entry</button></div></section>
+</div>
+<div class=col>
+<section class=card><h2>Outstanding</h2><div class=tot><b id=tot>₹0</b><span id=cnt></span></div><table id=t></table><div id=em class=empty>No entries yet.</div></section>
+<details class=card><summary>Test without microphone (typed text, no Gnani call)</summary>
+<div class=dev><input id=tx placeholder="Ramesh ko 200 udhaar"><button id=tb>Check</button></div></details>
+</div>
+<footer>Speech recognition by Gnani Prisma. Spoken replies by Gnani Timbre. Nothing is saved until you confirm.</footer>
+</div>
+<script>
+let mr,ch=[],cur=null;const $=id=>document.getElementById(id);
+const rupee=p=>'₹'+(p/100).toLocaleString('en-IN',{minimumFractionDigits:p%100?2:0});
+let BAL={};
+async function refresh(){const d=await (await fetch('/ledger')).json();BAL=d.balances;const e=Object.entries(d.balances);
+ ENT=d.entries;$('t').innerHTML=e.map(([k,v],i)=>`<tr><td><button type=button class=cust data-i=${i} aria-expanded=${OPEN===k} aria-label="Statement for ${esc(k)}"><span class=av aria-hidden=true>${esc([...k][0]||'?')}</span>${esc(k)}</button></td><td class="${v>0?'due':'ok'}">${rupee(v)}</td></tr>`+(OPEN===k?`<tr><td colspan=2>${stmt(k,v)}</td></tr>`:'')).join('');
+ $('t').querySelectorAll('.cust').forEach(b=>b.onclick=()=>{const k=e[+b.dataset.i][0];OPEN=OPEN===k?null:k;refresh()});$('em').hidden=e.length>0;
+ const tot=e.reduce((a,[,v])=>a+Math.max(v,0),0);$('tot').textContent=rupee(tot);$('cnt').textContent=e.length?e.filter(([,v])=>v>0).length+' of '+e.length+' customers owe':'No customers yet'}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let MT=null,NEWC=false,OPEN=null,ENT=[];
+function stmt(k,v){let run=0;const rows=ENT.filter(x=>x.customer===k).map(x=>{const d=x.kind==='credit'?x.amount_paise:x.kind==='payment'?-x.amount_paise:0;run+=d;return `<li><span>${esc(x.ts.slice(0,10))} ${x.kind==='credit'?'Udhaar':x.kind==='payment'?'Payment':'Sale'} ${rupee(x.amount_paise)}</span><b>${rupee(run)}</b></li>`}).join('');
+ return `<ul class=stmt aria-label="History with running balance">${rows}</ul>`+(v>0?`<button type=button class=copy id=cp>Copy reminder text</button><span id=cps role=status></span>`:'')}
+document.addEventListener('click',e=>{if(e.target.id!=='cp')return;const k=OPEN,v=BAL[k],t=`Namaste ${k}, a gentle reminder: ${rupee(v)} is pending in your udhaar account. Please pay when you can. Thank you.`;
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$('cps').textContent=' Copied. Paste it into WhatsApp or SMS yourself.',()=>{$('cps').textContent=' '+t})});
+function impact(){const n=$('cn').value.trim(),a=Math.round((+$('ca').value||0)*100),k=$('ck').value,cur=BAL[n]||0,el=$('im');
+ if(!n||!a){el.textContent='';el.className='impact';return}
+ if(MT){el.className='impact';el.textContent='Choose the existing account or New customer above before saving.';return}
+ const after=k==='credit'?cur+a:k==='payment'?cur-a:cur;el.className='impact'+(after<0?' bad':'');
+ el.innerHTML=after<0?'Payment is more than '+esc(n)+' owes ('+rupee(cur)+').':k==='sale'?esc(n)+' owes <b>'+rupee(cur)+'</b> (sale does not change what is owed).':esc(n)+' owes <b>'+rupee(cur)+'</b> now, <b>'+rupee(after)+'</b> after this entry.'}
+function valid(){impact();const ok=$('cn').value.trim()&&+$('ca').value>0&&!MT;$('sv').disabled=!ok;$('ca').classList.toggle('bad',!(+$('ca').value>0));return ok}
+function setMatch(c){NEWC=false;MT=c&&c.length?c:null;const m=$('mt');m.hidden=!MT;if(!MT)return;
+ m.innerHTML='<span>Sounds like an existing customer. Pick one, or keep this as a new customer.</span><div class=opts>'+c.map((x,i)=>'<button type=button data-i='+i+'>Use '+esc(x.name)+' ('+rupee(x.paise)+' owed)</button>').join('')+'<button type=button class=alt id=nc>New customer</button></div>';
+ m.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{$('cn').value=c[+b.dataset.i].name;setMatch([]);valid()});$('nc').onclick=()=>{setMatch([]);NEWC=true;valid()}}
+function review(d){cur=d.pending_id;const e=d.entry;$('rv').hidden=false;$('rv').style.scrollMarginTop='64px';setTimeout(()=>$('rv').scrollIntoView({block:'start',behavior:'auto'}),0);
+ $('wn').hidden=!e.issues.length;$('wn').textContent=e.issues.join('. ');
+ $('cn').value=e.customer||'';setMatch(e.match||[]);$('ca').value=e.issues.length?'':(e.amount||'');$('ck').value=e.kind==='unknown'?'credit':e.kind;valid();
+ (e.issues.length?$('ca'):$('sv')).focus()}
+$('cn').addEventListener('input',()=>{NEWC=false;if(MT)setMatch([])});['cn','ca'].forEach(i=>$(i).addEventListener('input',valid));$('ck').addEventListener('change',valid);
+$('sv').onclick=async()=>{if(!valid()||$('sv').dataset.busy)return;$('sv').dataset.busy=1;$('sv').disabled=true;const r=await fetch('/confirm',{method:'POST',body:JSON.stringify({pending_id:cur,customer:$('cn').value.trim(),amount:$('ca').value,kind:$('ck').value,new_customer:NEWC})});
+ delete $('sv').dataset.busy;
+ if(!r.ok){const d=await r.json();if(d.candidates&&d.candidates.length){setMatch(d.candidates);$('wn').hidden=true}else{$('wn').hidden=false;$('wn').textContent=d.error}valid();return}
+ $('rv').hidden=true;$('s').className='';$('s').textContent='Saved.';await refresh()};
+$('ds').onclick=async()=>{await fetch('/confirm',{method:'POST',body:JSON.stringify({pending_id:cur,discard:1})});$('rv').hidden=true;$('s').textContent='Discarded. Nothing was saved.'};
+$('tb').onclick=async()=>{const d=await (await fetch('/parse',{method:'POST',body:JSON.stringify({text:$('tx').value})})).json();$('s').textContent='Typed test: "'+d.entry.raw+'" (no Gnani call)';review(d)};
+
+// Fluid orb (user-supplied shader, ported from the React component to plain JS). Motion is a UI state, not measured audio level.
+const VERT='attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}';
+const FRAG=`#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform vec2 u_resolution;uniform float u_time;uniform vec3 u_color;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.0-2.0*f);
+ return mix(mix(hash(i+vec2(0.0,0.0)),hash(i+vec2(1.0,0.0)),u.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),u.x),u.y);}
+float fbm(vec2 p){float v=0.0;float a=0.6;for(int i=0;i<3;i++){v+=a*noise(p);p*=2.0;a*=0.5;}return v;}
+void main(){
+ vec2 uv=gl_FragCoord.xy/u_resolution.xy;float t=u_time*0.22;
+ vec2 drift=vec2(sin(t)+0.6*sin(t*1.7+1.3),cos(t*0.8)+0.6*cos(t*1.3+2.1));
+ vec2 p=vec2(uv.x*1.8,uv.y*1.0)+drift*0.7;
+ vec2 q=vec2(fbm(p+drift),fbm(p+vec2(3.2,1.5)-drift));
+ float f=fbm(p+1.2*q);
+ float g=clamp(1.0-uv.y,0.0,1.0);float anchor=smoothstep(0.0,0.3,uv.y);
+ float shade=clamp(g+(f-0.5)*0.8*anchor,0.0,1.0);
+ vec3 white=vec3(0.99,1.0,1.0);vec3 light=mix(white,u_color,0.5);vec3 dark=u_color;
+ vec3 col=white;col=mix(col,light,smoothstep(0.28,0.52,shade));col=mix(col,dark,smoothstep(0.58,0.88,shade));
+ float edge=1.0-smoothstep(0.49,0.5,distance(uv,vec2(0.5)));
+ gl_FragColor=vec4(col*edge,edge);}`;
+const hexRgb=h=>{h=h.replace('#','');const n=parseInt(h,16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
+const Orb=(()=>{const c=$('orb');let gl,prog,uT,uC,speed=1,acc=0,last=0,raf=0,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,ok=false,res=[];
+ function sh(t,src){const x=gl.createShader(t);gl.shaderSource(x,src);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(x));gl.deleteShader(x);return null}return x}
+ function init(){try{gl=c.getContext('webgl',{antialias:true,alpha:true});if(!gl)return;prog=gl.createProgram();const v=sh(gl.VERTEX_SHADER,VERT),f=sh(gl.FRAGMENT_SHADER,FRAG);if(!v||!f)return;
+  gl.attachShader(prog,v);gl.attachShader(prog,f);gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(prog));return}
+  gl.useProgram(prog);const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+  const a=gl.getAttribLocation(prog,'a_pos');gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+  uT=gl.getUniformLocation(prog,'u_time');uC=gl.getUniformLocation(prog,'u_color');
+  const px=Math.round(168*Math.min(devicePixelRatio||1,2));c.width=c.height=px;gl.viewport(0,0,px,px);gl.uniform2f(gl.getUniformLocation(prog,'u_resolution'),px,px);
+  res=[v,f,buf];ok=true;$('b').classList.add('gl');color('#0a7d5a');draw(performance.now());if(!reduce)raf=requestAnimationFrame(draw)}catch(e){ok=false}}
+ function draw(now){if(!ok)return;acc+=reduce?0:(now-(last||now))/1000*speed;last=now;gl.uniform1f(uT,acc);gl.drawArrays(gl.TRIANGLES,0,6);if(!reduce)raf=requestAnimationFrame(draw)}
+ function color(h){if(ok){gl.uniform3f(uC,...hexRgb(h));if(reduce)draw(performance.now())}}
+ function state(s){speed={idle:1,rec:5,busy:3}[s];color({idle:'#0a7d5a',rec:'#d70015',busy:'#0a7d5a'}[s])}
+ function destroy(){cancelAnimationFrame(raf);if(ok){gl.deleteProgram(prog);gl.deleteShader(res[0]);gl.deleteShader(res[1]);gl.deleteBuffer(res[2]);ok=false}$('b').classList.remove('gl')}
+ init();addEventListener('pagehide',destroy);return{state,destroy,get ok(){return ok}}})();
+function setBusy(on){$('b').setAttribute('aria-busy',on);if(on){$('bl').textContent='Processing...';Orb.state('busy')}else{Orb.state('idle');$('bl').textContent='Hold to speak'}}
+let held=false,cancelled=false;
+function setRec(on){$('b').classList.toggle('rec',on);$('b').setAttribute('aria-pressed',on);$('b').setAttribute('aria-label',on?'Recording. Release to review':'Hold to speak');$('bl').textContent=on?'Recording... Release to review':'Hold to speak';Orb.state(on?'rec':'idle')}
+async function startRec(e){if(held)return;held=true;cancelled=false;if(e&&e.pointerId!==undefined)try{$('b').setPointerCapture(e.pointerId)}catch(x){}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:true});if(!held){st.getTracks().forEach(x=>x.stop());return}
+ mr=new MediaRecorder(st);ch=[];mr.ondataavailable=ev=>ch.push(ev.data);
+ mr.onstop=async()=>{st.getTracks().forEach(x=>x.stop());
+  if(cancelled){$('s').className='';$('s').textContent='Cancelled. Nothing was sent or saved.';return}
+  $('s').className='';$('s').textContent='Listening to what you said...';setBusy(true);
+  let d;try{d=await (await fetch('/',{method:'POST',body:new Blob(ch)})).json()}catch(x){d={error:'Network problem: '+x.message}}finally{setBusy(false)}
+  if(d.error){$('s').className='err';$('s').textContent='Could not process: '+d.error;return}
+  $('s').textContent='Heard: "'+d.entry.raw+'"'+(d.entry.language?' ('+d.entry.language+')':'');
+  if(d.audio_wav_b64){$('a').src='data:audio/wav;base64,'+d.audio_wav_b64;$('a').hidden=false;$('a').play().catch(()=>{})}review(d)};
+ mr.start();setRec(true)}catch(x){held=false;$('s').className='err';$('s').textContent='Microphone not available: '+x.message}}
+function endRec(cancel){if(!held)return;held=false;cancelled=!!cancel;if(mr&&mr.state=='recording')mr.stop();setRec(false)}
+$('b').onpointerdown=startRec;$('b').onpointerup=()=>endRec(false);$('b').onpointercancel=()=>endRec(true);
+$('b').onkeydown=e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();startRec()}else if(e.key==='Escape')endRec(true)};
+$('b').onkeyup=e=>{if(e.key===' '||e.key==='Enter')endRec(false)};
+const q=new URLSearchParams(location.search).get('demo');if(q){$('tx').value=q;document.querySelector('details').open=true;$('tb').click()}
+refresh();
+</script>
